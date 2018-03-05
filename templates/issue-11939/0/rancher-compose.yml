@@ -1,0 +1,22 @@
+version: '2'
+catalog:
+  version: v0.1.0 # Version of the versioned template of the Catalog Entry
+
+services:
+        srv:
+                retain_ip: true
+                scale:  3
+                health_check:
+                        port:   55555
+                        request_line:  GET / HTTP/1.0
+                        healthy_threshold: 4
+                        response_timeout:       3000
+                        unhealthy_threshold:    6
+                        interval:       5000
+                        initializing_timeout:   180000
+                        reinitializing_timeout: 90000
+                        strategy: none
+
+        srv-pxy:
+                retain_ip: true
+

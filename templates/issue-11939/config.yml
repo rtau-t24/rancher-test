@@ -1,0 +1,8 @@
+name:   issue-11939
+description: |
+        Reproduce the issue described in #11939
+version: v0.0.1
+category:       Databases
+maintainer: Raymond Tau <raymond.tau@transact24.com>
+license: GPL 3
+

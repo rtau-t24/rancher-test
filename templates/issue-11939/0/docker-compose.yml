@@ -1,0 +1,30 @@
+version : '2'
+volumes:
+        test-data:
+                driver: local
+                per_container: true
+
+services:
+        srv:
+                build:  'https://github.com/rtau-t24/rancher-test.git#master:/docker-templates/python2.7/'
+                command:        ["python", "/sleep_status.py", "55555", "5"]
+                volumes_from:
+                        - srv-data
+                labels:
+                        io.rancher.sidekicks:   srv-data
+                        io.rancher.container.hostname_override: container_name
+                        io.rancher.scheduler.affinity:container_label_soft_ne:  io.rancher.stack_service.name={{ .Stack.Name }}/srv
+
+        srv-data:
+                image: busybox
+                volumes:
+                        - test-data:/var/lib/srv/data
+                labels:
+                        io.rancher.container.start_once: true
+
+        srv-pxy:
+                image: busybox
+                command:        ["top", "-b", "-d6"]
+                links:
+                        - srv
+
